@@ -1,10 +1,8 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
-// import langEs from "vuetify/es5/locale/es";
+import "@mdi/font/css/materialdesignicons.css";
 
-// import moment from "moment";
-// moment.locale("es");
 
 Vue.use(Vuetify);
 
