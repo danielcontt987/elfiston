@@ -17,9 +17,12 @@
         <style>
             body {
                 font-family: 'Nunito';
+                background-color: #f7f7f7 !important;
             }
-            html{
-                background-color: #101010
+            .v-card {
+                border-radius: 0.8rem !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
             }
         </style>
     </head>
