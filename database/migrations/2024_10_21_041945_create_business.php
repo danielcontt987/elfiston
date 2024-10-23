@@ -16,7 +16,7 @@ class CreateBusiness extends Migration
         Schema::create('business', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('sort_description')->nullable();
             $table->integer('phone')->nullable();
             $table->string('email')->nullable();
