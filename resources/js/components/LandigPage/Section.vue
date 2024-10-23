@@ -5,10 +5,7 @@
         <v-row align="center" justify="center">
           <v-col cols="10">
             <v-row align="center" justify="center">
-              <v-col sm="4" class="hidden-xs-only">
-                <v-img src="../../../../img/fiesta.png" class="d-block ml-auto mr-auto" max-width="350px" />
-              </v-col>
-              <v-col cols="12" sm="8" class="white--text text-left">
+              <v-col cols="12" class="white--text text-center">
                 <h1 class="font-weight-light display-2 mb-2">Entra a una nueva era en la realización de tus eventos</h1>
                 <h1 class="font-weight-light">
                     Tenemos ubicaciones con servicios completos para cada presupuesto que tengas, nuestro catalogo de opciones te permitira elegir entre los mejores lugares con las amenidades que requieras para que tu evento sea todo un éxito.

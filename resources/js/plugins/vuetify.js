@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import "@mdi/font/css/materialdesignicons.css";
-
+import langEs from "vuetify/es5/locale/es";
 
 Vue.use(Vuetify);
 
@@ -40,10 +40,10 @@ export default new Vuetify({
             }
         }
     },
-    // lang: {
-    //     locales: {
-    //         es: langEs
-    //     },
-    //     current: "es"
-    // }
+     lang: {
+         locales: {
+             es: langEs
+         },
+         current: "es"
+     }
 });

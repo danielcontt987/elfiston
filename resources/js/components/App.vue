@@ -5,7 +5,7 @@
       <Home v-if="$route.path === '/'"/>
       <SectionLanding v-if="$route.path === '/'" />
       <Contact v-if="$route.path === '/'" />
-      <router-view v-if="$route.path === '/listado-de-servicios'"></router-view>
+      <router-view v-if="$route.path === '/listado-de-servicios' || $route.path === '/detalle-del-servicio'"></router-view>
     </v-main>
     <FooterLanding v-if="$route.path === '/'"/>
     <v-scale-transition>
@@ -32,6 +32,10 @@
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
+}
+
+.v-main {
+  font-family: "Montserrat" !important;;
 }
 
 .bg-color{

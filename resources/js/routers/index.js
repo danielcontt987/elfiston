@@ -7,12 +7,22 @@ let Service = Vue.component(
     require("../components/Service/ListService.vue").default
 );
 
+let ServiceDetail = Vue.component(
+  "ServiceDetail",
+  require("../components/Service/ServiceDatail.vue").default
+);
+
 const routes = [
     {
-        path: "/listado-de-servicios",
-        name: "ListService",
-        component: Service,
-      },
+      path: "/listado-de-servicios",
+      name: "Listado de servicios",
+      component: Service,
+    },
+    {
+      path: "/detalle-del-servicio",
+      name: "Detalle del servicio",
+      component: ServiceDetail,
+    },
 ];
 
 
