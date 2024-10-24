@@ -1,6 +1,12 @@
 <template>
   <v-container>
     <v-row>
+      <v-col cols="12" md="8">
+          <v-btn color="yellow accent-3" class="rounded-lg elevation-0" large @click="$router.push('/listado-de-servicios')">
+              <v-icon left>mdi-arrow-left-circle-outline</v-icon>
+              Regresar
+          </v-btn>
+      </v-col>
       <v-col cols="12" md="7">
         <h1 class="display-1 font-weight-bold">{{ getBusiness && getBusiness.sort_description }}</h1>
         <p>{{ getBusiness && getBusiness.address }}</p>
@@ -21,8 +27,13 @@
           <p class="font-weight-light text-center"> <b> {{ getBusiness && getBusiness.price | currency }} MXN</b></p>
           <v-row class="ml-1 mr-1">
             <v-col cols="12">
-              <v-btn color="secondary" @click="openModal()" class="mt-4 mr-2 elevation-0" large block>
-                Reservar
+              <v-btn color="secondary" @click="openModal()" class="mt-4 mr-2 elevation-0 rounded-lg" large block>
+                Ver reservaciones
+              </v-btn>
+            </v-col>
+            <v-col cols="12">
+              <v-btn color="yellow accent-3" @click="openModalSchedule()" class="mt-4 mr-2 elevation-0 rounded-lg" large block>
+                Reservar ahora
               </v-btn>
             </v-col>
           </v-row>
@@ -116,22 +127,14 @@
                 {{ $refs.calendar.title }}
               </v-toolbar-title>
               <v-toolbar-title v-else>
-                {{currentMonth}}
+                {{ currentMonth }}
               </v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon class="ma-2" @click="$refs.calendar.next()">
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
-              <v-select
-                v-model="type"
-                :items="types"
-                item-text="name"
-                item-value="value"
-                dense
-                outlined
-                hide-details
-                class="ma-2"
-                label="Tipo"></v-select>
+              <v-select v-model="type" :items="types" item-text="name" item-value="value" dense outlined hide-details
+                class="ma-2" label="Tipo"></v-select>
             </v-sheet>
             <v-sheet height="550">
               <v-calendar ref="calendar" v-model="value" :weekdays="weekday" :type="type" :events="events"
@@ -171,14 +174,112 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="modal" width="490">
+      <v-card class="my-0 overflow-hidden">
+        <v-card-title class="primary white--text">
+          <v-row>
+            <v-col cols="12"> Calendario de visitas </v-col>
+          </v-row>
+        </v-card-title>
+        <v-card-text>
+          <v-row class="mt-2">
+            <v-col cols="12">
+              <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
+                transition="scale-transition" offset-y min-width="290px">
+                <template v-slot:activator="{ on }">
+                  <v-text-field v-model="date" label="Fecha *" outlined readonly v-on="on"  hide-details />
+                </template>
+                <v-date-picker v-model="date" no-title scrollable :min="nowDate" class="my-0">
+                 <v-row>
+                  <v-col cols="12" md="6">
+                    <v-btn text class="rounded-lg"color="error" @click="menu = false">Cerrar</v-btn>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <v-btn block class="rounded-lg elevation-0" color="primary" @click="$refs.menu.save(date)">Aceptar</v-btn>
+                  </v-col>
+                 </v-row>
+                </v-date-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="12">
+              <v-menu ref="menuH" v-model="menuH" :close-on-content-click="false"
+                :return-value.sync="hour" transition="scale-transition" offset-y min-width="290px">
+                <template v-slot:activator="{ on }">
+                  <v-text-field v-model="hour" label="Hora *" outlined readonly v-on="on" hide-details />
+                </template>
+                <v-time-picker v-model="hour" class="my-0" @click:hour="closePicker">
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <v-btn text class="rounded-lg"color="error" @click="menuH = false">Cerrar</v-btn>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-btn block class="rounded-lg elevation-0" color="primary" @click="
+                      $refs.menuH.save(hour)
+                      ">Aceptar</v-btn>
+                    </v-col>
+                 </v-row>
+                </v-time-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field ref="name" v-model="motive" label="Nombre a reservar *" outlined  hide-details />
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+            <v-row>
+                <v-col cols="12" md="6" order="2" order-md="1">
+                    <v-btn
+                        class="rounded-lg"
+                        large
+                        text
+                        depressed
+                        block
+                        color="error"
+                        @click="closeModal()">
+                        Cerrar
+                    </v-btn>
+                </v-col>
+                <v-col cols="12" md="6" order="1" order-md="2">
+                    <v-btn
+                        class="rounded-lg"
+                        large
+                        depressed
+                        block
+                        color="primary"
+                        @click="saveSchedule()">
+                        Reservar
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <alert-normal>
+            <v-row class="mx-0">
+                <v-col class="text-center">
+                    <v-btn
+                        class="rounded-lg"
+                        large
+                        depressed
+                        block
+                        color="primary white--text"
+                    >
+                        Entendido
+                    </v-btn>
+                </v-col>
+            </v-row>
+    </alert-normal>
   </v-container>
 </template>
 
 <script>
 import moment from "moment";
 import { mapState } from 'vuex';
+import AlertNormal from "../Alerts/AlertNormal.vue";
 
 export default {
+  components:{AlertNormal},
   mounted() {
     if (this.$route.params && Object.keys(this.$route.params).length === 0) {
       this.$router.push({
@@ -188,6 +289,12 @@ export default {
   },
   data() {
     return {
+      menu: false,
+      menuH: false,
+      nowDate: moment().format('YYYY-MM-DD'),
+      hour: "",
+      motive: "",
+      date: null,
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
       mode: "stack",
@@ -217,15 +324,28 @@ export default {
         },
       ],
       type: "month",
-        types: [
-            {name: "Mensual", value: "month"},
-            {name: "Semanal", value: "week"},
-            {name: "Diario", value: "day"},
-        ],
+      types: [
+        { name: "Mensual", value: "month" },
+        { name: "Semanal", value: "week" },
+        { name: "Diario", value: "day" },
+      ],
+      modal: false,
+      disabledHours: [0, 1, 2, 3, 4, 5, 22, 23]
     };
-    
+
   },
   methods: {
+    closeModal(){
+      this.modal = false;
+      this.hour = "";
+      this.motive = "";
+      this.date = "";
+    },
+    closePicker(v){
+      v = v < 10 ? '0'+v : v;
+      this.time = v+":00";
+      this.menu = false
+    },
     openWhatsApp() {
       const phoneNumber = '34612345678'; // Reemplaza con tu número en formato internacional
       const message = 'Hola, quiero más información'; // Mensaje predefinido
@@ -239,62 +359,93 @@ export default {
       alert(`Has clicado en ${event.name}`);
     },
     getEventColor(event) {
-        return event.color;
+      return event.color;
     },
-    getEvents ({ start, end }) {
-        const events = []
+    getEvents({ start, end }) {
+      const events = []
 
-        const min = new Date(`${start.date}T00:00:00`)
-        const max = new Date(`${end.date}T23:59:59`)
-        const days = (max.getTime() - min.getTime()) / 86400000
-        const eventCount = this.rnd(days, days + 20)
+      const min = new Date(`${start.date}T00:00:00`)
+      const max = new Date(`${end.date}T23:59:59`)
+      const days = (max.getTime() - min.getTime()) / 86400000
+      const eventCount = this.rnd(days, days + 20)
 
-        for (let i = 0; i < eventCount; i++) {
-          const allDay = this.rnd(0, 3) === 0
-          const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-          const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-          const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-          const second = new Date(first.getTime() + secondTimestamp)
+      for (let i = 0; i < eventCount; i++) {
+        const allDay = this.rnd(0, 3) === 0
+        const firstTimestamp = this.rnd(min.getTime(), max.getTime())
+        const first = new Date(firstTimestamp - (firstTimestamp % 900000))
+        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
+        const second = new Date(first.getTime() + secondTimestamp)
 
-          events.push({
-            name: this.names[this.rnd(0, this.names.length - 1)],
-            start: first,
-            end: second,
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            timed: !allDay,
-          })
-        }
+        events.push({
+          name: this.names[this.rnd(0, this.names.length - 1)],
+          start: first,
+          end: second,
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
+          timed: !allDay,
+        })
+      }
 
-        this.events = events
+      this.events = events
     },
-    rnd (a, b) {
+    rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a
     },
-    viewDay({date}) {
+    viewDay({ date }) {
       this.value = date;
       this.type = "day";
       console.log("hola");
-      
-    },
-    showEvent({nativeEvent, event}) {
-        const open = () => {
-            this.selectedEvent = event;
-            this.selectedElement = nativeEvent.target;
-            requestAnimationFrame(() =>
-                requestAnimationFrame(() => (this.selectedOpen = true))
-            );
-        };
 
-        if (this.selectedOpen) {
-            this.selectedOpen = false;
-            requestAnimationFrame(() =>
-                requestAnimationFrame(() => open())
-            );
-        } else {
-            open();
-        }
-        nativeEvent.stopPropagation();
     },
+    showEvent({ nativeEvent, event }) {
+      const open = () => {
+        this.selectedEvent = event;
+        this.selectedElement = nativeEvent.target;
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => (this.selectedOpen = true))
+        );
+      };
+
+      if (this.selectedOpen) {
+        this.selectedOpen = false;
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => open())
+        );
+      } else {
+        open();
+      }
+      nativeEvent.stopPropagation();
+    },
+    openModalSchedule() {
+      this.modal = true
+    },
+    saveSchedule(){ 
+        let params = {
+          service_id: this.getBusiness.service.id,
+          date: this.date,
+          hour: this.hour,
+        }
+
+        this.$store.dispatch("schedule/storeSchedule", params).then((response) => {
+          this.$store.dispatch("alert/setDialog", {
+               color:  "success",
+               icon:   "mdi-check-circle-outline",
+               title:  "Nueva reservación",
+               msg:    "Se ha creado una nueva reserveción correctamente",
+               type: 0,
+             })
+          this.closeModal();
+        }).catch((error) => {
+            if (error.response.data.status) {
+                this.$store.dispatch("alert/setDialog", {
+                color:  "warning",
+                icon:   "mdi-information-outline",
+                title:  "Ya hay reservado",
+                msg:    "La fecha y la hora concuerdan con una reservación",
+                type: 0,
+              })
+            }
+        });
+    }
   },
   computed: {
     ...mapState("business", ["getBusiness"]),
@@ -304,6 +455,9 @@ export default {
 
 <style>
 .v-main {
+  font-family: "Montserrat" !important;
+}
+.v-card{
   font-family: "Montserrat" !important;
 }
 </style>

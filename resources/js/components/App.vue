@@ -35,7 +35,7 @@
 }
 
 .v-main {
-  font-family: "Montserrat" !important;;
+  font-family: "Montserrat" !important;
 }
 
 .bg-color{

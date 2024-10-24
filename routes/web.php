@@ -39,3 +39,8 @@ Route::prefix('category')->group(function () {
 Route::prefix('business')->group(function () {
     Route::get('/list', [App\Http\Controllers\BusinessController::class, 'list']);
 });
+
+Route::prefix('schedule')->group(function () {
+    Route::get('/list', [App\Http\Controllers\ScheduleController::class, 'list']);
+    Route::post('/store', [App\Http\Controllers\ScheduleController::class, 'store']);
+});

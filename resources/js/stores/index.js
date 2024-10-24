@@ -3,6 +3,8 @@ import Vuex from "vuex";
 import ubication from "./ubication";
 import category from "./category";
 import business from "./business";
+import schedule from "./schedule";
+import alert from "./alert";
 
 
 
@@ -13,7 +15,9 @@ const store = new Vuex.Store({
     modules: {
         ubication,
         category,
-        business
+        business,
+        schedule,
+        alert,
     }
 });    
 

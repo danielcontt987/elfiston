@@ -12,7 +12,7 @@
               <img src="../../../../public/images/logo.png" alt="Logo" />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="title">Calango</v-list-item-title>
+              <v-list-item-title class="title">El fieston</v-list-item-title>
               <v-list-item-subtitle>WEB</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -33,6 +33,19 @@
             <v-list-item-content>
               <v-list-item-title class="subtitile-1">{{
                 text
+              }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            @click="goTolist()"
+          >
+            <v-list-item-icon class="justify-center">
+              <v-icon>{{ "mdi-menu" }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title class="subtitile-1">{{
+                "Listdo de servicios"
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
